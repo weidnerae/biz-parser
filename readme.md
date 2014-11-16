@@ -30,6 +30,7 @@ Day Hour-range [, repeat for each day]: deal text[: true if drink false if food]
 
 BUSINESS DATA
 ------------------
+```
 {
   name:String,
   desc:String,
@@ -53,3 +54,4 @@ BUSINESS DATA
     price:float
   }]
 }
+```
