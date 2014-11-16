@@ -19,12 +19,15 @@ sections:
 each section is separated by a single dash (-)
 
 Hours:
+
 Day Hour-range, repeat for each day open
 
 Events:
+
 Day: event title - event text
 
 Deals:
+
 Day Hour-range [, repeat for each day]: deal text[: true if drink false if food]
 
 
