@@ -37,11 +37,14 @@ var oauth = {
 }
 
 var day = process.argv[2]
+var biz
+var bizs
 
 parse_business()
 
 function parse_business() {
-  var bizs = [];
+  bizs = []
+  var dealos = []
   // read data/ directory
   fs.readdir('data/', function (err, files) {
     files.map(function (file) {
@@ -54,7 +57,6 @@ function parse_business() {
         console.log(lines[0]) // output restaurant name
         // create var that will hold our business obj
         // while we work on it
-        var biz
 
         biz = {
           _id: lines[0],
@@ -72,8 +74,6 @@ function parse_business() {
         if (_.contains(lines, "Deals:")) {
           // raw data
           var deals = lines.slice(_.indexOf(lines, "Deals:") + 1, _.indexOf(lines, "-", _.indexOf(lines, "Deals:")))
-          // array for finished deal objects
-          var dealos = [];
 
           // populate the array
           build_deals(deals, dealos)
@@ -104,15 +104,27 @@ function parse_business() {
       })
     })
   })
-  store_bizs(bizs)
+  // store_bizs(bizs)
+  console.log(dealos)
+  store_deals(dealos)
 }
 
 function store_bizs(bizs) {
   Cloudant({account: config.username, password: config.password}, function(er, cloudant) {
-    var db_bizs = cloudant.db.use('bizs');
+    var db_bizs = cloudant.db.use('bizs')
     db_bizs.bulk({"docs": bizs}, function(err, body) {
       if (err) console.log(err)
-      console.log("successfully uploaded")
+      console.log("successfully uploaded bizs")
+    })
+  })
+}
+
+function store_deals(deals) {
+  Cloudant({account: config.username, password: config.password}, function (er, cloudant) {
+    var db_deals = cloudant.db.use('deals2')
+    db_deals.bulk({"docs": deals}, function(err, body) {
+      if (err) console.log(err)
+        console.log("successfully uploaded deals")
     })
   })
 }
@@ -217,12 +229,14 @@ function build_deals(deals, dealos) {
         eat = !S(element[2]).toBoolean()
       }
       dealos.push({
+        _id: element[1],
         day: d,
         text: element[1],
         hours: h,
         drink: drink,
         eat: eat,
-        price: strprice[0]
+        price: strprice[0],
+        place: biz.name
       })
     }
   })
