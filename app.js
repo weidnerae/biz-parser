@@ -6,7 +6,6 @@
  *
  */
 
-var Cloudant = require('cloudant')
 var fs       = require('fs')
 var readline = require('readline')
 var config   = require('./config.json')
@@ -14,6 +13,7 @@ var request  = require('request')
 var S        = require('string')
 var _        = require('underscore')
 var path     = require('path')
+var nano     = require('nano')('http://localhost:5984')
 
 // command prompt for classifying deals
 var rl = readline.createInterface({
@@ -109,24 +109,37 @@ function parse_business() {
   store_deals(dealos)
 }
 
+// store in couchdb
 function store_bizs(bizs) {
-  Cloudant({account: config.username, password: config.password}, function(er, cloudant) {
-    var db_bizs = cloudant.db.use('bizs')
-    db_bizs.bulk({"docs": bizs}, function(err, body) {
-      if (err) console.log(err)
-      console.log("successfully uploaded bizs")
-    })
+  var db_bizs = nano.db.use('bizs')
+  db_bizs.bulk({"docs": bizs}, function(err, body) {
+    if (err) console.log(err)
+    console.log("successfully uploaded bizs")
   })
+
+  // Cloudant({account: config.username, password: config.password}, function(er, cloudant) {
+  //   var db_bizs = cloudant.db.use('bizs')
+  //   db_bizs.bulk({"docs": bizs}, function(err, body) {
+  //     if (err) console.log(err)
+  //     console.log("successfully uploaded bizs")
+  //   })
+  // })
 }
 
 function store_deals(deals) {
-  Cloudant({account: config.username, password: config.password}, function (er, cloudant) {
-    var db_deals = cloudant.db.use('deals2')
-    db_deals.bulk({"docs": deals}, function(err, body) {
-      if (err) console.log(err)
-        console.log("successfully uploaded deals")
-    })
+  var db_deals = nano.db.use('deals')
+  db_deals.bulk({"docs": deals}, function(err, body) {
+    if (err) console.log(err)
+    console.log("successfully uploaded deals")
   })
+
+  // Cloudant({account: config.username, password: config.password}, function (er, cloudant) {
+  //   var db_deals = cloudant.db.use('deals2')
+  //   db_deals.bulk({"docs": deals}, function(err, body) {
+  //     if (err) console.log(err)
+  //       console.log("successfully uploaded deals")
+  //   })
+  // })
 }
 
 function build_events(events, eventos) {
@@ -200,6 +213,7 @@ function build_deals(deals, dealos) {
           eat = !S(element[2]).toBoolean()
         }
         dealos.push({
+          _id: element[1],
           day: d,
           text: element[1],
           hours: h,
