@@ -7,8 +7,6 @@
  */
 
 var fs       = require('fs')
-var readline = require('readline')
-var config   = require('./config.json')
 var request  = require('request')
 var S        = require('string')
 var _        = require('underscore')
