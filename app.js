@@ -106,7 +106,7 @@ function store_bizs(bizs) {
   var db_bizs = nano.db.use('bizs')
   db_bizs.bulk({"docs": bizs}, function(err, body) {
     if (err) console.log(err)
-    console.log("successfully uploaded bizs")
+    console.log(body)
   })
 
   // Cloudant({account: config.username, password: config.password}, function(er, cloudant) {
