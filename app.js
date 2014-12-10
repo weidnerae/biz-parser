@@ -13,12 +13,6 @@ var _        = require('underscore')
 var path     = require('path')
 var nano     = require('nano')('http://localhost:5984')
 
-// command prompt for classifying deals
-var rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-})
-
 // yelp api nonsense
 var consumer_key = 'nMttGA-pdyXSk20Ady60NQ'
 var consumer_secret = '47R_D2JGjK20j1qmlNyNRRsGWm8'
@@ -174,7 +168,8 @@ function build_hours(hours, houros) {
 //   hours:String,
 //   drink:String,
 //   eat:boolean,
-//   price:float
+//   price:float,
+//   place:String
 // }]
 function build_deals(deals, dealos) {
   deals = _.compact(deals)
