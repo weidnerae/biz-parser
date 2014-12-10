@@ -102,12 +102,13 @@ function parse_business() {
 
 // store in couchdb
 function store_bizs(bizs) {
-  console.log(bizs)
+  //console.log(bizs)
   var db_bizs = nano.db.use('bizs')
   db_bizs.bulk({"docs": bizs}, function(err, body) {
     if (err) console.log(err)
-    console.log("response body")
-    console.log(body)
+    console.log("no err")
+    //console.log("response body")
+    //console.log(body)
   })
 
   // Cloudant({account: config.username, password: config.password}, function(er, cloudant) {
