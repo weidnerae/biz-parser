@@ -92,12 +92,11 @@ function parse_business() {
           biz.hours = houros;
         }
 
-        console.log(biz)
         bizs.push(biz)
       })
-      console.log(biz)
     })
   })
+  console.log(bizs)
   //store_deals(dealos)
 }
 
