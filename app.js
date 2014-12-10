@@ -12,7 +12,6 @@ var S        = require('string')
 var _        = require('underscore')
 var path     = require('path')
 var nano     = require('nano')('http://localhost:5984')
-var async    = require('async')
 
 // yelp api nonsense
 var consumer_key = 'nMttGA-pdyXSk20Ady60NQ'
@@ -40,11 +39,9 @@ function parse_business() {
   var dealos = []
   // read data/ directory
   fs.readdir('data/', function (err, files) {
-    var f = files.map(function (file) {
+    files.map(function (file) {
       return path.join('data/', file)
-    })
-
-    async.eachSeries(f, function (file) {
+    }).forEach(function (file) {
 
       var data = fs.readFile(file, 'utf8', function(err, data) {
         if (err) throw err
@@ -95,13 +92,19 @@ function parse_business() {
           biz.hours = houros;
         }
         bizs.push(biz)
-      }, function() {
-        console.log(bizs)
-        store_bizs(bizs)
-      });
+        store_biz(biz)
+      })
     })
   })
   //store_deals(dealos)
+}
+
+function store_biz(biz) {
+  var db_bizs = nano.db.use('bizs')
+  db_bizs.insert(biz, function(err, body) {
+    if (err) console.log(err)
+    console.log(body)
+  })
 }
 
 // store in couchdb
