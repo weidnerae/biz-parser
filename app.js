@@ -42,61 +42,60 @@ function parse_business() {
     files.map(function (file) {
       return path.join('data/', file)
     }).forEach(function (file) {
-      fs.readFile(file, 'utf8', function(err, data) {
-        if (err) throw err
 
-        var lines = S(data).lines()
-        // console.log(lines[0]) // output restaurant name
-        // create var that will hold our business obj
-        // while we work on it
+      var data = fs.readFile(file, 'utf8')
 
-        biz = {
-          _id: lines[0],
-          name: lines[0],
-          address: lines[1] + "," + lines[2],
-          phone: lines[3],
-          url: lines[4],
-          desc: null,
-          deals: null,
-          hours: null,
-          events: null
-        }
+      var lines = S(data).lines()
+      // console.log(lines[0]) // output restaurant name
+      // create var that will hold our business obj
+      // while we work on it
 
-        // now we start looking for our tags
-        if (_.contains(lines, "Deals:")) {
-          // raw data
-          var deals = lines.slice(_.indexOf(lines, "Deals:") + 1, _.indexOf(lines, "-", _.indexOf(lines, "Deals:")))
+      biz = {
+        _id: lines[0],
+        name: lines[0],
+        address: lines[1] + "," + lines[2],
+        phone: lines[3],
+        url: lines[4],
+        desc: null,
+        deals: null,
+        hours: null,
+        events: null
+      }
 
-          // populate the array
-          build_deals(deals, dealos)
+      // now we start looking for our tags
+      if (_.contains(lines, "Deals:")) {
+        // raw data
+        var deals = lines.slice(_.indexOf(lines, "Deals:") + 1, _.indexOf(lines, "-", _.indexOf(lines, "Deals:")))
 
-          biz.deals = dealos;
-        }
+        // populate the array
+        build_deals(deals, dealos)
 
-        if (_.contains(lines, "Events:")) {
-          var events = lines.slice(_.indexOf(lines, "Events:"), _.indexOf(lines, "-", _.indexOf(lines, "Events:")))
-          var eventos = [];
+        biz.deals = dealos;
+      }
 
-          build_events(events, eventos)
+      if (_.contains(lines, "Events:")) {
+        var events = lines.slice(_.indexOf(lines, "Events:"), _.indexOf(lines, "-", _.indexOf(lines, "Events:")))
+        var eventos = [];
 
-          biz.events = eventos;
-        }
+        build_events(events, eventos)
 
-        if (_.contains(lines, "Hours:")) {
-          var hours = lines.slice(_.indexOf(lines, "Hours:"), _.indexOf(lines, "-", _.indexOf(lines, "Hours:")))
-          var houros = [];
+        biz.events = eventos;
+      }
 
-          build_hours(hours, houros)
+      if (_.contains(lines, "Hours:")) {
+        var hours = lines.slice(_.indexOf(lines, "Hours:"), _.indexOf(lines, "-", _.indexOf(lines, "Hours:")))
+        var houros = [];
 
-          biz.hours = houros;
-        }
+        build_hours(hours, houros)
 
-        //console.log(biz)
-        bizs.push(biz)
-      })
+        biz.hours = houros;
+      }
+
+      //console.log(biz)
+      bizs.push(biz)
     })
+    store_bizs(bizs)
   })
-  store_bizs(bizs)
   //store_deals(dealos)
 }
 
