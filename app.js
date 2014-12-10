@@ -102,8 +102,8 @@ function parse_business() {
 
 // store in couchdb
 function store_bizs(bizs) {
-  //console.log(bizs)
-  var db_bizs = nano.use('bizs')
+  console.log(bizs)
+  var db_bizs = nano.db.use('bizs')
   db_bizs.bulk({"docs": bizs}, function(err, body) {
     if (err) console.log(err)
     console.log("no err")
