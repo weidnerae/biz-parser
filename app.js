@@ -46,7 +46,7 @@ function parse_business() {
         if (err) throw err
 
         var lines = S(data).lines()
-        console.log(lines[0]) // output restaurant name
+        // console.log(lines[0]) // output restaurant name
         // create var that will hold our business obj
         // while we work on it
 
@@ -91,7 +91,7 @@ function parse_business() {
           biz.hours = houros;
         }
 
-        console.log(biz)
+        //console.log(biz)
         bizs.push(biz)
       })
     })
