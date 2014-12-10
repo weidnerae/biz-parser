@@ -93,6 +93,7 @@ function parse_business() {
         }
         bizs.push(biz)
         store_biz(biz)
+        store_deals(biz.deals)
       })
     })
   })
@@ -117,30 +118,14 @@ function store_bizs(bizs) {
     console.log("response body")
     console.log(body)
   })
-
-  // Cloudant({account: config.username, password: config.password}, function(er, cloudant) {
-  //   var db_bizs = cloudant.db.use('bizs')
-  //   db_bizs.bulk({"docs": bizs}, function(err, body) {
-  //     if (err) console.log(err)
-  //     console.log("successfully uploaded bizs")
-  //   })
-  // })
 }
 
 function store_deals(deals) {
   var db_deals = nano.use('deals')
   db_deals.bulk({"docs": deals}, function(err, body) {
     if (err) console.log(err)
-    console.log("successfully uploaded deals")
+    console.log(body)
   })
-
-  // Cloudant({account: config.username, password: config.password}, function (er, cloudant) {
-  //   var db_deals = cloudant.db.use('deals2')
-  //   db_deals.bulk({"docs": deals}, function(err, body) {
-  //     if (err) console.log(err)
-  //       console.log("successfully uploaded deals")
-  //   })
-  // })
 }
 
 function build_events(events, eventos) {
