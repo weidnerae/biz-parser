@@ -12,6 +12,7 @@ var S        = require('string')
 var _        = require('underscore')
 var path     = require('path')
 var nano     = require('nano')('http://localhost:5984')
+var async    = require('async')
 
 // yelp api nonsense
 var consumer_key = 'nMttGA-pdyXSk20Ady60NQ'
@@ -39,9 +40,11 @@ function parse_business() {
   var dealos = []
   // read data/ directory
   fs.readdir('data/', function (err, files) {
-    files.map(function (file) {
+    var f = files.map(function (file) {
       return path.join('data/', file)
-    }).forEach(function (file) {
+    })
+
+    async.eachSeries(f, function (file) {
 
       var data = fs.readFile(file, 'utf8', function(err, data) {
         if (err) throw err
@@ -92,11 +95,12 @@ function parse_business() {
           biz.hours = houros;
         }
         bizs.push(biz)
-      })
+      }, function() {
+        console.log(bizs)
+        store_bizs(bizs)
+      });
     })
-    console.log(bizs)
   })
-  console.log(bizs)
   //store_deals(dealos)
 }
 
