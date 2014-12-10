@@ -97,7 +97,7 @@ function parse_business() {
     })
   })
   store_bizs(bizs)
-  store_deals(dealos)
+  //store_deals(dealos)
 }
 
 // store in couchdb
