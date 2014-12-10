@@ -91,10 +91,10 @@ function parse_business() {
 
           biz.hours = houros;
         }
-
         bizs.push(biz)
       })
     })
+    console.log(bizs)
   })
   console.log(bizs)
   //store_deals(dealos)
