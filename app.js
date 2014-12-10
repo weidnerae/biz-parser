@@ -95,6 +95,7 @@ function parse_business() {
         console.log(biz)
         bizs.push(biz)
       })
+      console.log(biz)
     })
   })
   //store_deals(dealos)
