@@ -66,29 +66,30 @@ function parse_business() {
 				if (_.contains(lines, "Deals:")) {
 					// raw data
 					var deals = lines.slice(_.indexOf(lines, "Deals:") + 1, _.indexOf(lines, "-", _.indexOf(lines, "Deals:")))
-
+					// reset array
+					dealos = []
 					// populate the array
 					build_deals(deals, dealos)
 
-					biz.deals = dealos;
+					biz.deals = dealos
 				}
 
 				if (_.contains(lines, "Events:")) {
 					var events = lines.slice(_.indexOf(lines, "Events:"), _.indexOf(lines, "-", _.indexOf(lines, "Events:")))
-					var eventos = [];
+					var eventos = []
 
 					build_events(events, eventos)
 
-					biz.events = eventos;
+					biz.events = eventos
 				}
 
 				if (_.contains(lines, "Hours:")) {
 					var hours = lines.slice(_.indexOf(lines, "Hours:"), _.indexOf(lines, "-", _.indexOf(lines, "Hours:")))
-					var houros = [];
+					var houros = []
 
 					build_hours(hours, houros)
 
-					biz.hours = houros;
+					biz.hours = houros
 				}
 				bizs.push(biz)
 				store_biz(biz)
