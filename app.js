@@ -64,6 +64,7 @@ function parse_business() {
 				}
 
 				// now we start looking for our tags
+				console.log("working on deals...")
 				if (_.contains(lines, "Deals:")) {
 					// raw data
 					var deals = lines.slice(_.indexOf(lines, "Deals:") + 1, _.indexOf(lines, "-", _.indexOf(lines, "Deals:")))
@@ -75,6 +76,7 @@ function parse_business() {
 					biz.deals = dealos
 				}
 
+				console.log("working on events...")
 				if (_.contains(lines, "Events:")) {
 					var events = lines.slice(_.indexOf(lines, "Events:"), _.indexOf(lines, "-", _.indexOf(lines, "Events:")))
 					var eventos = []
@@ -84,6 +86,7 @@ function parse_business() {
 					biz.events = eventos
 				}
 
+				console.log("working on hours...")
 				if (_.contains(lines, "Hours:")) {
 					var hours = lines.slice(_.indexOf(lines, "Hours:"), _.indexOf(lines, "-", _.indexOf(lines, "Hours:")))
 					var houros = []
@@ -92,6 +95,7 @@ function parse_business() {
 
 					biz.hours = houros
 				}
+				console.log("storing everything...")
 				bizs.push(biz)
 				store_biz(biz)
 				store_deals(biz.deals)
