@@ -35,6 +35,7 @@ var bizs
 parse_business()
 
 function parse_business() {
+	console.log("parsing businesses...")
   bizs = []
   var dealos = []
   // read data/ directory
