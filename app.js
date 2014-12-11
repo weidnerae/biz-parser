@@ -44,6 +44,7 @@ function parse_business() {
       return path.join('data/', file)
     }).forEach(function (file) {
 			fs.readFile(file, 'utf8', function(err, data) {
+			console.log("reading file...")
 			if (err) throw err
 
 				var lines = S(data).lines()
