@@ -102,6 +102,7 @@ function parse_business() {
 
 
 function store_biz(biz) {
+	console.log("storing business")
   var db_bizs = nano.db.use('bizs')
   db_bizs.insert(biz, function(err, body) {
     if (err) console.log(err)
@@ -110,6 +111,7 @@ function store_biz(biz) {
 }
 
 function store_deals(deals) {
+	console.log("storing deals")
   var db_deals = nano.use('deals')
   db_deals.bulk({"docs": deals}, function(err, body) {
     if (err) console.log(err)
