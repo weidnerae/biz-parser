@@ -41,77 +41,69 @@ function parse_business() {
   fs.readdir('data/', function (err, files) {
     files.map(function (file) {
       return path.join('data/', file)
-    }).forEach(fs.readFile(file, 'utf8', function(err, data) {
-      if (err) throw err
+    }).forEach(function (file) {
+			fs.readFile(file, 'utf8', function(err, data) {
+			if (err) throw err
 
-      var lines = S(data).lines()
-      // console.log(lines[0]) // output restaurant name
-      // create var that will hold our business obj
-      // while we work on it
+				var lines = S(data).lines()
+				// console.log(lines[0]) // output restaurant name
+				// create var that will hold our business obj
+				// while we work on it
 
-      biz = {
-        _id: lines[0],
-        name: lines[0],
-        address: lines[1] + "," + lines[2],
-        phone: lines[3],
-        url: lines[4],
-        desc: null,
-        deals: null,
-        hours: null,
-        events: null
-      }
+				biz = {
+					_id: lines[0],
+					name: lines[0],
+					address: lines[1] + "," + lines[2],
+					phone: lines[3],
+					url: lines[4],
+					desc: null,
+					deals: null,
+					hours: null,
+					events: null
+				}
 
-      // now we start looking for our tags
-      if (_.contains(lines, "Deals:")) {
-        // raw data
-        var deals = lines.slice(_.indexOf(lines, "Deals:") + 1, _.indexOf(lines, "-", _.indexOf(lines, "Deals:")))
+				// now we start looking for our tags
+				if (_.contains(lines, "Deals:")) {
+					// raw data
+					var deals = lines.slice(_.indexOf(lines, "Deals:") + 1, _.indexOf(lines, "-", _.indexOf(lines, "Deals:")))
 
-        // populate the array
-        build_deals(deals, dealos)
+					// populate the array
+					build_deals(deals, dealos)
 
-        biz.deals = dealos;
-      }
+					biz.deals = dealos;
+				}
 
-      if (_.contains(lines, "Events:")) {
-        var events = lines.slice(_.indexOf(lines, "Events:"), _.indexOf(lines, "-", _.indexOf(lines, "Events:")))
-        var eventos = [];
+				if (_.contains(lines, "Events:")) {
+					var events = lines.slice(_.indexOf(lines, "Events:"), _.indexOf(lines, "-", _.indexOf(lines, "Events:")))
+					var eventos = [];
 
-        build_events(events, eventos)
+					build_events(events, eventos)
 
-        biz.events = eventos;
-      }
+					biz.events = eventos;
+				}
 
-      if (_.contains(lines, "Hours:")) {
-        var hours = lines.slice(_.indexOf(lines, "Hours:"), _.indexOf(lines, "-", _.indexOf(lines, "Hours:")))
-        var houros = [];
+				if (_.contains(lines, "Hours:")) {
+					var hours = lines.slice(_.indexOf(lines, "Hours:"), _.indexOf(lines, "-", _.indexOf(lines, "Hours:")))
+					var houros = [];
 
-        build_hours(hours, houros)
+					build_hours(hours, houros)
 
-        biz.hours = houros;
-      }
-      bizs.push(biz)
-      store_biz(biz)
-      store_deals(biz.deals)
-    })
+					biz.hours = houros;
+				}
+				bizs.push(biz)
+				store_biz(biz)
+				store_deals(biz.deals)
+			})
+		})
   })
 }
+
+
 
 function store_biz(biz) {
   var db_bizs = nano.db.use('bizs')
   db_bizs.insert(biz, function(err, body) {
     if (err) console.log(err)
-    console.log(body)
-  })
-}
-
-// store in couchdb
-function store_bizs(bizs) {
-  console.log(bizs)
-  var db_bizs = nano.db.use('bizs')
-  db_bizs.bulk({"docs": bizs}, function(err, body) {
-    if (err) console.log(err)
-    console.log("no err")
-    console.log("response body")
     console.log(body)
   })
 }
