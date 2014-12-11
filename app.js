@@ -97,7 +97,6 @@ function parse_business() {
       })
     })
   })
-  //store_deals(dealos)
 }
 
 function store_biz(biz) {
@@ -206,7 +205,8 @@ function build_deals(deals, dealos) {
           hours: h,
           drink: drink,
           eat: eat,
-          price: price
+          price: price,
+					place: biz.name
         })
       })
     } else {
